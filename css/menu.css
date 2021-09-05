@@ -1,0 +1,20 @@
+.menu_content_container {
+	display: flex;
+}
+
+.menu_wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	width: 70%;
+}
+
+/* Menu Items */
+.menu_item {
+	margin: 20px auto;
+	padding: 15px;
+	width: 100%;
+}
+
+.menu_item_price {
+	font-size: 12px;
+}
