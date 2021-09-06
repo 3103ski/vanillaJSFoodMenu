@@ -1,5 +1,4 @@
 cart = (function () {
-	// Local Variables
 	let cartItems = [];
 	let cartTotal = (function () {
 		let balance = 0.0;
@@ -23,7 +22,7 @@ cart = (function () {
             <div id="cart_item_${item.prop}" class="cart_item_outer">
 				<div class="cart_item_text">
 					<p class="cart_item_title">${item.title}</p>
-					<p id="cart_${item.prop}_qty" class="cart_item_qty">QTY: ${item.qty}</p>
+					<p id="cart_${item.prop}_qty" class="cart_item_qty">QTY: ${item.getQty()}</p>
 					<p id="cart_${item.prop}_total" class="cart_item_total">$${item.price}</p>
 				</div>
                 <button id="${item.prop}_remove_btn" class="btn white btn_remove" >Remove</button>
@@ -34,7 +33,9 @@ cart = (function () {
 	function cartWidgetHTML() {
 		return `
 			<div id="cart_widget_container" class="cart_widget_container">
-				<div id="cart_list" />
+				<h2>Your Order</h2>
+				<div id="cart_list"></div>
+				<h5 id="cart_widget_total"></h5>
 			</div>
 		`;
 	}
@@ -46,8 +47,10 @@ cart = (function () {
 	// Render Methods
 	function renderTotal() {
 		headerCartEl = document.getElementById('cart_total_button');
+		widgetTotalEl = document.getElementById('cart_widget_total');
 		if (headerCartEl) {
 			headerCartEl.innerHTML = `<p class="white">Cart Total: $${cartTotal.getTotal()}</p>`;
+			widgetTotalEl.innerHTML = `Total: $${cartTotal.getTotal()}`;
 		}
 	}
 
@@ -56,14 +59,14 @@ cart = (function () {
 
 		if (cartItems.length > 0) {
 			cartItems.map((item) => {
-				let cartItem = document.getElementById(`cart_item_${item.prop}`);
-				let emptyNotice = document.getElementById('empty_cart_text');
+				let itemEl = document.getElementById(`cart_item_${item.prop}`);
+				let emptyNoticeEl = document.getElementById('empty_cart_text');
 
-				if (emptyNotice) {
-					emptyNotice.remove();
+				if (emptyNoticeEl) {
+					emptyNoticeEl.remove();
 				}
 
-				if (cartItem) {
+				if (itemEl) {
 					document.getElementById(
 						`cart_${item.prop}_qty`
 					).textContent = `QTY: ${item.getQty()}`;
@@ -94,7 +97,6 @@ cart = (function () {
 			let item = food[foodItem];
 			if (item.getQty() > 0) {
 				updatedCart.push(item);
-				console.log(item.getTotal());
 				cartTotal.add(item.getTotal());
 			} else {
 				let currItem = document.getElementById(`cart_item_${item.prop}`);
